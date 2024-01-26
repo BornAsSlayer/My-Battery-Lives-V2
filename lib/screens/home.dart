@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_battery_lives_v2/widgets/battery_status_widget.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
