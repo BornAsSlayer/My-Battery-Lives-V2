@@ -66,7 +66,7 @@ class _BatteryStatusWidgetState extends State<BatteryStatusWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('$batteryStateNew',
+        Text(batteryStateNew,
         style: const TextStyle( fontFamily: 'Sometypemono Regular'),
         ),
         const SizedBox(height: 5),
