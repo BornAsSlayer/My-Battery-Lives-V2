@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_battery_lives_v2/widgets/battery_85_logic_widget.dart';
 import 'package:my_battery_lives_v2/widgets/battery_status_widget.dart';
 
 class Home extends StatefulWidget {
@@ -28,6 +29,7 @@ class _HomeState extends State<Home> {
           children: [
             SizedBox(height: 250),
             BatteryStatusWidget(),
+            Battery85Switch(),
           ],
         ),
       ),

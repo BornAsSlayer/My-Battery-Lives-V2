@@ -20,7 +20,6 @@ class _BatteryStatusWidgetState extends State<BatteryStatusWidget> {
   );
 
   late Timer timer;
-  bool switchValue = true;
   String batteryPercentage = "{Battery percentage comes here...}";
 
   Future<void> _callBatteryPercentageService() async{
@@ -95,13 +94,6 @@ class _BatteryStatusWidgetState extends State<BatteryStatusWidget> {
           ),
         ),
         const SizedBox(width: 20),
-        Switch(value: switchValue, 
-        onChanged: (bool value) { 
-          setState(() {
-            switchValue = value;         
-          });
-        },
-        )
       ],
     );
   }
