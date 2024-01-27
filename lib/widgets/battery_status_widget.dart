@@ -15,7 +15,7 @@ class BatteryStatusWidget extends StatefulWidget {
 class _BatteryStatusWidgetState extends State<BatteryStatusWidget> {
   final BatteryService _batteryService = BatteryService();
   final Battery battery = Battery();
-  String batteryStateNew = 'null';
+  String batteryStateNew = 'waiting for data...';
 
   final _logger = Logger(
     printer: SimplePrinter(),
@@ -41,17 +41,6 @@ class _BatteryStatusWidgetState extends State<BatteryStatusWidget> {
   void initState() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer){
       _callBatteryPercentageService();
-      batteryStateNew = _batteryService.batteryStatus();
-
-      // if(batteryState == 'BatteryState.connectedNotcharging'){
-      //   batteryStateNew = 'Connected, Not Charging';
-      // }else if(batteryState == 'BatteryState.discharging'){
-      //   batteryStateNew = 'Not Charging';
-      // }else if(batteryState == 'BatteryState.charging'){
-      //   batteryStateNew = 'Charging';
-      // }else{
-      //   batteryStateNew = 'null';
-      // } 
     });
     super.initState();
   }
@@ -66,8 +55,26 @@ class _BatteryStatusWidgetState extends State<BatteryStatusWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(batteryStateNew,
-        style: const TextStyle( fontFamily: 'Sometypemono Regular'),
+        StreamBuilder(
+          stream: _batteryService.getBatteryStateStream(), 
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              if('${snapshot.data}' == 'BatteryState.connectedNotCharging'){
+                batteryStateNew = 'Connected, Not Charging';
+              }else if('${snapshot.data}' == 'BatteryState.discharging'){
+                batteryStateNew = 'Not Charging';
+              }else if('${snapshot.data}' == 'BatteryState.charging'){
+                batteryStateNew = 'Charging';
+              }
+              return Text(batteryStateNew,
+                          style: const TextStyle( fontFamily: 'Sometypemono Regular'),
+              );
+            }else{
+              return Text(batteryStateNew,
+                          style: const TextStyle( fontFamily: 'Sometypemono Regular'),
+              );
+            }
+          }
         ),
         const SizedBox(height: 5),
         Text(batteryPercentage,

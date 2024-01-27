@@ -8,32 +8,25 @@ class BatteryService{
   final Battery _battery = Battery();
   BatteryState? batteryState;
   StreamSubscription <BatteryState>? batteryStateSubscription;
+  final StreamController<BatteryState> batteryStateStreamController = StreamController();
+
+  BatteryService(){
+    batteryStateSubscription = _battery.onBatteryStateChanged.listen((BatteryState state) {
+      batteryStateStreamController.add(state);
+    });
+  }
 
   final Logger _logger = Logger(
     printer: SimplePrinter()
   );
 
-  String batteryStatus(){
-    _battery.onBatteryStateChanged.listen((BatteryState state) {
-      batteryState = state;
-    });
-    return '$batteryState';
+  Stream<BatteryState> getBatteryStateStream(){
+    return batteryStateStreamController.stream;
   }
 
-  String batteryStatusText(){
-    _battery.onBatteryStateChanged.listen((BatteryState state) {
-      batteryState = state;
-    });
-    String state = '$batteryState';
-    if(state == 'BatteryState.connectedNotcharging'){
-      return 'Connected, Not Charging';
-    }else if(state == 'BatteryState.discharging'){
-      return 'Not Charging';
-    }else if(state == 'BatteryState.charging'){
-      return 'Charging';
-    }else{
-      return 'null';
-    }
+  void batteryStatusStreamDispose(){
+    batteryStateStreamController.close();
+    batteryStateSubscription?.cancel();
   }
 
   Future<int> getBatteryPercentage() async{
