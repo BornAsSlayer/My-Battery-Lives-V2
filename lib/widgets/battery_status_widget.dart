@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:my_battery_lives_v2/services/battery_service.dart';
@@ -14,7 +13,6 @@ class BatteryStatusWidget extends StatefulWidget {
 
 class _BatteryStatusWidgetState extends State<BatteryStatusWidget> {
   final BatteryService _batteryService = BatteryService();
-  final Battery battery = Battery();
   String batteryStateNew = 'waiting for data...';
 
   final _logger = Logger(
@@ -66,23 +64,35 @@ class _BatteryStatusWidgetState extends State<BatteryStatusWidget> {
               }else if('${snapshot.data}' == 'BatteryState.charging'){
                 batteryStateNew = 'Charging';
               }
-              return Text(batteryStateNew,
-                          style: const TextStyle( fontFamily: 'Sometypemono Regular'),
+              return Text(
+                batteryStateNew,
+                style: const TextStyle( 
+                  fontFamily: 'Sometypemono Regular'
+                ),
               );
             }else{
-              return Text(batteryStateNew,
-                          style: const TextStyle( fontFamily: 'Sometypemono Regular'),
+              return Text(
+                batteryStateNew,
+                style: const TextStyle( 
+                  fontFamily: 'Sometypemono Regular'
+                ),
               );
             }
           }
         ),
         const SizedBox(height: 5),
-        Text(batteryPercentage,
-        style: const TextStyle( fontFamily: 'Sometypemono Regular'),
+        Text(
+          batteryPercentage,
+          style: const TextStyle( 
+            fontFamily: 'Sometypemono Regular'
+          ),
         ),
         const SizedBox(height: 5),
-        const Text("enable 85 percentage battery warning?",
-        style: TextStyle( fontFamily: 'Sometypemono Regular'),
+        const Text(
+          "enable 85 percentage battery warning?",
+          style: TextStyle( 
+            fontFamily: 'Sometypemono Regular'
+          ),
         ),
         const SizedBox(width: 20),
         Switch(value: switchValue, 

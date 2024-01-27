@@ -6,7 +6,6 @@ import 'package:logger/logger.dart';
 
 class BatteryService{
   final Battery _battery = Battery();
-  BatteryState? batteryState;
   StreamSubscription <BatteryState>? batteryStateSubscription;
   final StreamController<BatteryState> batteryStateStreamController = StreamController();
 
