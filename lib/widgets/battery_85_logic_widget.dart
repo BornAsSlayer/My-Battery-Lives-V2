@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Battery85Switch extends StatefulWidget {
@@ -11,6 +12,7 @@ class Battery85Switch extends StatefulWidget {
 class _Battery85SwitchState extends State<Battery85Switch> {
   late SharedPreferences _preferences;
   late bool switchValue = false;
+  String text = 'start_service';
 
   @override
   void initState() {
@@ -34,12 +36,31 @@ class _Battery85SwitchState extends State<Battery85Switch> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-      Switch(
+    final service = FlutterBackgroundService();
+
+    stopBatteryService() async{
+      bool isRunning = await service.isRunning();
+      if(isRunning){
+        service.invoke('stopService');
+      }else{
+        service.startService();
+      }
+    }
+    return Column(
+      children: [
+        Switch(
         value: switchValue, 
-        onChanged: (bool value) { 
-          setSwitchValue(value);
-        },
-      );
+          onChanged: (bool value) { 
+            setSwitchValue(value);
+            if(switchValue == true){
+              service.invoke('setAsForeground');
+              service.startService();
+            }else{
+              stopBatteryService();
+            }
+          },
+        ),
+      ],
+    );
   }
 }
